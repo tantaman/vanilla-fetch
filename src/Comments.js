@@ -17,12 +17,7 @@ export default function Comments({ comments }) {
 }
 
 Comments.fetch = async function* (postId) {
-  let comments = [];
-  for await (const comment of dataSource.comments(postId)) {
-    comments = comments.concat(comment);
-    if (comments.length > 10) {
-      comments = comments.slice(comments.length - 10, comments.length);
-    }
-    yield comments;
+  for await (const comments of dataSource.comments(postId)) {
+    yield [...comments];
   }
 };

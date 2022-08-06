@@ -43,13 +43,16 @@ export default {
 
     while (true) {
       // Simulate network fetch
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 750));
       console.log("yield for " + postId);
 
       const comment = {
         id: commentId++,
         time: new Date(),
-        body: randomWords({ exactly: 25, join: " " }),
+        body: randomWords({
+          exactly: 10 + Math.floor(Math.random() * 35),
+          join: " ",
+        }),
       };
 
       let existing = commentsCache[postId];
@@ -64,11 +67,12 @@ export default {
           existing.length
         );
       }
-      yield comment;
+      yield existing;
     }
   },
 
   async user(id) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
     return {
       name: "Tantaman",
       img: "",
