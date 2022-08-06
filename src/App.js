@@ -29,6 +29,7 @@ export default function App() {
         onClick={() => {
           setPostData(null);
           dataSource.clearCaches();
+          setLoading(null);
         }}
       >
         Reset
@@ -38,7 +39,7 @@ export default function App() {
           <li
             key={p.id}
             onClick={async () => {
-              // only flash a loading screen if laoding takes > 25ms
+              // only flash a loading screen if loading takes > 25ms
               setTimeout(() => {
                 setLoading(p.id);
               }, 25);
