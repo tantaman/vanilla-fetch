@@ -2,7 +2,7 @@ import React from "react";
 import dataSource from "./dataSource";
 
 export default function Author({ author }) {
-  return "author";
+  return <div>{author.name}</div>;
 }
 
 Author.fetch = async (authorId) => {

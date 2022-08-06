@@ -8,7 +8,6 @@ export default function Post({ data }) {
     return null;
   }
   const post = data.post;
-  console.log("render post");
 
   return (
     <main>

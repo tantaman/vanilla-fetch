@@ -2,6 +2,7 @@ import "./App.css";
 import { useState } from "react";
 import React from "react";
 import Post from "./Post";
+import dataSource from "./dataSource";
 
 export default function App() {
   const postSummaries = [
@@ -20,16 +21,28 @@ export default function App() {
   ];
 
   const [postData, setPostData] = useState();
+  const [loading, setLoading] = useState();
 
   return (
     <div className="App">
-      <button onClick={() => setPostData(null)}>clear</button>
+      <button
+        onClick={() => {
+          setPostData(null);
+          dataSource.clearCaches();
+        }}
+      >
+        Reset
+      </button>
       <ul>
         {postSummaries.map((p) => (
           <li
             key={p.id}
             onClick={async () => {
-              // we could show a loading screen if the fetch takes longer than 50ms
+              // only flash a loading screen if laoding takes > 25ms
+              setTimeout(() => {
+                setLoading(p.id);
+              }, 25);
+              setLoading(null);
               setPostData(await Post.fetch(p.id));
             }}
           >
@@ -37,7 +50,11 @@ export default function App() {
           </li>
         ))}
       </ul>
-      <Post data={postData} />
+      {loading != null && postData?.post?.id != loading ? (
+        <div>Loading...</div>
+      ) : (
+        <Post data={postData} />
+      )}
     </div>
   );
 }
