@@ -1,4 +1,4 @@
-# React Jumped the Shark
+# Apollo with the Apollo, Realy with the Relay
 (view the completed demo: https://tantaman.com/vanilla-fetch/)
 
 Something has been bothering me about React for quite some time. The complexity of data fetching is off the charts and just doesn't make sense. Then there's "fetch-on-render" which leads to an awful waterfalling user experience. Finally, getting the result of a `JavaScript` promise _always_ enqueues a micro task even if that promise is already resolved.
@@ -9,9 +9,9 @@ The last one was the last straw for me. It means any `async` data layer that doe
 
 `Relay` and `Apollo` make all this a breeze. The way they pull fragments from components and craft a single query that can fulfill the data needs of an entire app is a true blessing. But the cost of adopting those is prohibitive. Do I really need to GraphQL-ify my API just to get such a pleasent data fetching experience? What if I have _local state_ that is behind an async API? E.g., a `SQLite` connection, `IndexedDB` or `Origin Private Filesystem` storing data on-device for my app?
 
-# Suspense 
+<!-- # Suspense 
 
-Suspense supposedly offers us a way out. I'm skeptical.
+Suspense offers us a way out. Its true it does -- and it allows rendering in the background as data loads in -- but I'm skeptical of some of its warts.
 
 Suspense doesn't solve the issue of resolved promises being async so it seems like they're introducing a caching system via cache components... https://github.com/reactwg/react-18/discussions/25
 
@@ -27,13 +27,11 @@ With this caveat:
 
 > We don't intend to provide support for refreshing specific entries. The idea is that you refresh everything, and rely on an additional, backing cache layer — the browser request cache, a mutable data store, etc — to deduplicate requests
 
-Cache on cache?
-
-This just doesn't sit well with me.
+Cache on cache? -->
 
 # Vanilla JS
 
-I started my career developing thick client [sonar](https://www.britannica.com/technology/sonar) displays in `Java` and `C++`. Yea, `Java`. I'll probably be flamed for being a `Java` dev 🤷‍♂️. The `Java` culture is... over abstracted for sure. `Swing` and `AWT` and over-use of listeners and all that were totally convoluted.
+I started my career developing thick clients in `Java` and `C++`. Yea, `Java`. I'll probably be flamed for being a `Java` dev 🤷‍♂️. The `Java` culture is... over abstracted for sure. `Swing` and `AWT` and over-use of listeners and all that were totally convoluted.
 
 But one thing we never had a problem with was data fetching. We relied strictly on language primitives to get all the data needed by the UI and it was always rather simple.
 
@@ -174,11 +172,11 @@ If we wait ~25ms to show the loading indicator then it will never be shown when 
 
 This is done in [App.js](https://github.com/tantaman/vanilla-fetch/blob/main/src/App.js).
 
-# Deferred Fetching & Render-then-fetch
+# Deferred Fetching & Render-as-you-fetch
 
 From the generator example, hopefully its pretty straightforward to see how to do defer fetching. Either return a promise or return a geneartor with no "initial" state.
 
-Render then fetch is a twist on (or same as?) deferred fetching.
+Render-as-you-fetch requires suspense to handle it well. todo.
 
 # Other
 
