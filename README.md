@@ -9,25 +9,15 @@ The last one was the last straw for me. It means any `async` data layer that doe
 
 `Relay` and `Apollo` make all this a breeze. The way they pull fragments from components and craft a single query that can fulfill the data needs of an entire app is a true blessing. But the cost of adopting those is prohibitive. Do I really need to GraphQL-ify my API just to get such a pleasent data fetching experience? What if I have _local state_ that is behind an async API? E.g., a `SQLite` connection, `IndexedDB` or `Origin Private Filesystem` storing data on-device for my app?
 
-<!-- # Suspense 
+# Suspense
 
-Suspense offers us a way out. Its true it does -- and it allows rendering in the background as data loads in -- but I'm skeptical of some of its warts.
+Suspense helps a lot -- but it doesn't solve the problem of how to express all the data needs of a tree of components early so we can avoid "fetch-on-render" and truly use ["render-as-you-fetch"](https://17.reactjs.org/docs/concurrent-mode-suspense.html#approach-3-render-as-you-fetch-using-suspense).
 
-Suspense doesn't solve the issue of resolved promises being async so it seems like they're introducing a caching system via cache components... https://github.com/reactwg/react-18/discussions/25
+Suspense also has some warts.
 
-```
-<Cache>
-  <Toolbar>
-      <CurrentUserProfilePic />
-  </Toolbar>
-</Cache>
-```
+> We don't intend to provide support for refreshing specific entries. The idea is that you refresh everything, and rely on an additional, backing cache layer — the browser request cache, a mutable data store, etc — to deduplicate requests - https://github.com/reactwg/react-18/discussions/25
 
-With this caveat:
-
-> We don't intend to provide support for refreshing specific entries. The idea is that you refresh everything, and rely on an additional, backing cache layer — the browser request cache, a mutable data store, etc — to deduplicate requests
-
-Cache on cache? -->
+Cache on a cache? What could go wrong.
 
 # Vanilla JS
 
