@@ -1,4 +1,5 @@
 # React Jumped the Shark
+(view the completed demo: https://tantaman.com/vanilla-fetch/)
 
 Something has been bothering me about React for quite some time. The complexity of data fetching is off the charts and just doesn't make sense. Then there's "render then fetch" which leads to an awful user experience. Finally, getting the result of a `JavaScript` promise _always_ enqueues a micro task even if that promise is already resolved.
 
@@ -42,7 +43,7 @@ The answer seems to be YES! We can do all of this with no help from Suspense/Rel
 
 # How It's Done
 
-(view the complete demo: https://tantaman.com/suspense-without-suspense/)
+(view the complete demo: https://tantaman.com/vanilla-fetch/)
 
 Each React component has a sibling `fetch` function.
 
@@ -60,7 +61,7 @@ These sibling functions are responsible for fetching the data for the component 
 
 > fetching the data for that component and invoking the fetchers for child components
 
-Lets see an example of this ([Post.js](https://github.com/tantaman/suspense-without-suspense/blob/main/src/Post.js)):
+Lets see an example of this ([Post.js](https://github.com/tantaman/vanilla-fetch/blob/main/src/Post.js)):
 
 ```js
 Post.fetch = async (id) => {
@@ -106,7 +107,7 @@ Of course not all data sources are done as soon as we're done fetching from them
 
 To support that, we can define our fetch function as an `async generator`. You saw a preview of this above where `Post.fetch` referred to `generator: commentsGen`.
 
-The following example ([Comments.js](https://github.com/tantaman/suspense-without-suspense/blob/main/src/Comments.js)) fetches and streams the latest comments on a post, in realtime.
+The following example ([Comments.js](https://github.com/tantaman/vanilla-fetch/blob/main/src/Comments.js)) fetches and streams the latest comments on a post, in realtime.
 
 ```js
 function Comments({ comments }) {
@@ -136,7 +137,7 @@ Doing this is pretty simple.
 
 If you want to fetch some data for a component in response to some event (like a click), call that component's `fetch` function in the event.
 
-Example ([App.js](https://github.com/tantaman/suspense-without-suspense/blob/main/src/App.js)):
+Example ([App.js](https://github.com/tantaman/vanilla-fetch/blob/main/src/App.js)):
 
 ```js
 function App() {
@@ -171,26 +172,17 @@ This one might be controversial but I think a valid approach is to not show a lo
 
 If we wait ~25ms to show the loading indicator then it will never be shown when we fetch cached data from our data source. Problem solved. Easy.
 
-This is done in [App.js](https://github.com/tantaman/suspense-without-suspense/blob/main/src/App.js).
+This is done in [App.js](https://github.com/tantaman/vanilla-fetch/blob/main/src/App.js).
 
 # Deferred Fetching & Render-then-fetch
 
 From the generator example, hopefully its pretty straightforward to see how to do defer fetching. Either return a promise or return a geneartor with no "initial" state.
 
-Render then fetch is a twist on deferred fetching.
+Render then fetch is a twist on (or same as?) deferred fetching.
 
 # Other
-
-The abstractions 
-
-If I stick with `React` I'll likely use suspense but with the patterns outlined above because:
-
-1. Suspense will be idiomatic and familiar to other devs
-2. Will hopefully outweigh the costs of custom code
-
-but it does seem
 
 - I've never used `Vue` but this `fetch as sibling` makes the view much "dumber" and much more akin to templates that were used back in the day. Seems like a good fit for `Vue`.
 - This little repository is an exploration of those questions before making data fetching pattern recommendations for https://aphrodite.sh users.
 
-view the complete demo: https://tantaman.com/suspense-without-suspense/
+view the completed demo: https://tantaman.com/vanilla-fetch/
