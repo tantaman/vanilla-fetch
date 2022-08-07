@@ -42,6 +42,8 @@ The answer seems to be YES! We can do all of this with no help from Suspense/Rel
 
 # How It's Done
 
+(view the complete demo: https://tantaman.com/suspense-without-suspense/)
+
 Each React component has a sibling `fetch` function.
 
 ```js
@@ -190,3 +192,5 @@ but it does seem
 
 - I've never used `Vue` but this `fetch as sibling` makes the view much "dumber" and much more akin to templates that were used back in the day. Seems like a good fit for `Vue`.
 - This little repository is an exploration of those questions before making data fetching pattern recommendations for https://aphrodite.sh users.
+
+view the complete demo: https://tantaman.com/suspense-without-suspense/
