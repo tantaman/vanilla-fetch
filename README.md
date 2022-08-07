@@ -11,7 +11,7 @@ The last one was the last straw for me. It means any `async` data layer that doe
 
 # Suspense 
 
-Suspense supposedly offers us a way out. I'm skeptical. Doesn't suspense encourage more "render then fetch" by making it easier to do?
+Suspense supposedly offers us a way out. I'm skeptical.
 
 Suspense doesn't solve the issue of resolved promises being async so it seems like they're introducing a caching system via cache components... https://github.com/reactwg/react-18/discussions/25
 
