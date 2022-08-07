@@ -47,7 +47,7 @@ export default function App() {
               setPostData(await Post.fetch(p.id));
             }}
           >
-            <a href="#">{p.title}</a>
+            <a href="#!">{p.title}</a>
           </li>
         ))}
       </ul>

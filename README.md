@@ -1,4 +1,4 @@
-# Apollo without Apollo. Relay without Relay. Suspense without the... Suspense
+# React Jumped the Shark
 
 Something has been bothering me about React for quite some time. The complexity of data fetching is off the charts and just doesn't make sense. Then there's "render then fetch" which leads to an awful user experience. Finally, getting the result of a `JavaScript` promise _always_ enqueues a micro task even if that promise is already resolved.
 
@@ -34,7 +34,7 @@ Can't we go back to using language primitives for data fetching in `JS`? Can't i
 
 The answer seems to be YES! We can do all of this with no help from Suspense/Relay/Apollo/insert other framework here. We can do it all, and keep it all pretty simple, with vanilla `JS`.
 
-# How Its Done
+# How It's Done
 
 Each React component has a sibling `fetch` function.
 

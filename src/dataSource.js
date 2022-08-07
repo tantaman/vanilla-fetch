@@ -72,11 +72,17 @@ export default {
   },
 
   async user(id) {
+    const existing = userCache[id];
+    if (existing) {
+      return existing;
+    }
     await new Promise((resolve) => setTimeout(resolve, 100));
-    return {
+    const ret = {
       name: "Tantaman",
       img: "",
     };
+    userCache[id] = ret;
+    return ret;
   },
 
   clearCaches() {
