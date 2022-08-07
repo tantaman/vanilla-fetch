@@ -1,4 +1,4 @@
-# Apollo with the Apollo, Realy with the Relay
+# Apollo without the Apollo, Realy without the Relay
 (view the completed demo: https://tantaman.com/vanilla-fetch/)
 
 Something has been bothering me about React for quite some time. The complexity of data fetching is off the charts and just doesn't make sense. Then there's "fetch-on-render" which leads to an awful waterfalling user experience. Finally, getting the result of a `JavaScript` promise _always_ enqueues a micro task even if that promise is already resolved.
