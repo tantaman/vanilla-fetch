@@ -32,9 +32,7 @@ But one thing we never had a problem with was data fetching. We relied strictly 
 
 Can't we go back to using language primitives for data fetching in `JS`? Can't it be simple? And can't we _fetch before we render_ while still localizing data fetching concerns with the components that need the data? Finally, can we allow our async APIs, which may have caching in them already, to keep the responsibility of caching?
 
-This little repository is an exploration of those questions before integrating the model into `https://aphrodite.sh` down the road.
-
-And the answer seems to be YES! We can do all of this with no help from Suspense/Relay/Apollo/insert other framework here. We can do it all, and keep it all pretty simple, with vanilla `JS`.
+The answer seems to be YES! We can do all of this with no help from Suspense/Relay/Apollo/insert other framework here. We can do it all, and keep it all pretty simple, with vanilla `JS`.
 
 # How Its Done
 
@@ -167,3 +165,12 @@ This one might be controversial but I think a valid approach is to not show a lo
 If we wait ~25ms to show the loading indicator then it will never be shown when we fetch cached data from our data source. Problem solved. Easy.
 
 This is done in [App.js](https://github.com/tantaman/suspense-without-suspense/blob/main/src/App.js).
+
+# Deferred Fetching & Render-then-fetch
+
+Hopefully its pretty straightforward to see how to do defferred fetching (return a promise or use a geneartor). Render-then-fetch can be done with effects but I do think something suspense-like still does have a role to play here.
+
+# Other
+
+- I've never used `Vue` but this `fetch as sibling` makes the view much "dumber" and much more akin to templates that were used back in the day. Seems like a good fit for `Vue`.
+- This little repository is an exploration of those questions before making data fetching pattern recommendations for https://aphrodite.sh users.
