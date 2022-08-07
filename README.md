@@ -6,7 +6,7 @@ The last one was the last straw for me. It means any `async` data layer that doe
 
 # Relay, Apollo
 
-Relay and Apollo make all this a breeze. The way they pull fragments from components and craft a single query that can fulfill the data needs of an entire app is a true blessing. But the cost of adopting those is prohibitive. Do I really need to GraphQL-ify my API just to get such a pleasent data fetching experience? What if I have _local state_ that is behind an async API? E.g., a `SQLite` connection, `IndexedDB` or `Origin Private Filesystem`.
+`Relay` and `Apollo` make all this a breeze. The way they pull fragments from components and craft a single query that can fulfill the data needs of an entire app is a true blessing. But the cost of adopting those is prohibitive. Do I really need to GraphQL-ify my API just to get such a pleasent data fetching experience? What if I have _local state_ that is behind an async API? E.g., a `SQLite` connection, `IndexedDB` or `Origin Private Filesystem` storing data on-device for my app?
 
 # Suspense 
 
@@ -22,7 +22,13 @@ Suspense doesn't solve the issue of resolved promises being async so it seems li
 </Cache>
 ```
 
-Idk. This just doesn't sit well with me. Wouldn't your data layer already likely have caching? So you've added a cache on a cache?
+With this caveat:
+
+> We don't intend to provide support for refreshing specific entries. The idea is that you refresh everything, and rely on an additional, backing cache layer — the browser request cache, a mutable data store, etc — to deduplicate requests
+
+Cache on cache?
+
+This just doesn't sit well with me.
 
 # Vanilla JS
 
@@ -30,7 +36,7 @@ I started my career developing thick client [sonar](https://www.britannica.com/t
 
 But one thing we never had a problem with was data fetching. We relied strictly on language primitives to get all the data needed by the UI and it was always rather simple.
 
-Can't we go back to using language primitives for data fetching in `JS`? Can't it be simple? And can't we _fetch before we render_ while still localizing data fetching concerns with the components that need the data? Finally, can we allow our async APIs, which may have caching in them already, to keep the responsibility of caching?
+Can't we go back to using language primitives for data fetching in `JS`? Can't it be simple? And can't we _fetch before we render_ while still localizing data fetching concerns with the components that need the data? Finally, can we allow our async APIs, which may have caching in them already, to keep the responsibility of caching and not duplicate it or move it?
 
 The answer seems to be YES! We can do all of this with no help from Suspense/Relay/Apollo/insert other framework here. We can do it all, and keep it all pretty simple, with vanilla `JS`.
 
@@ -61,12 +67,11 @@ Post.fetch = async (id) => {
     dataSource.post(id),
     commentsGen.next(),
   ]);
-  comments = comments.value;
 
   return {
     post,
     _Comments: {
-      prefetch: comments,
+      prefetch: comments.value,
       generator: commentsGen,
     },
     _Author: await Author.fetch(id),
@@ -74,7 +79,7 @@ Post.fetch = async (id) => {
 };
 ```
 
-would be gather data for:
+would gather data for:
 
 ```js
 function Post({ data }) {
@@ -129,7 +134,7 @@ Doing this is pretty simple.
 
 If you want to fetch some data for a component in response to some event (like a click), call that component's `fetch` function in the event.
 
-Example:
+Example ([App.js](https://github.com/tantaman/suspense-without-suspense/blob/main/src/App.js)):
 
 ```js
 function App() {
@@ -168,9 +173,20 @@ This is done in [App.js](https://github.com/tantaman/suspense-without-suspense/b
 
 # Deferred Fetching & Render-then-fetch
 
-Hopefully its pretty straightforward to see how to do defferred fetching (return a promise or use a geneartor). Render-then-fetch can be done with effects but I do think something suspense-like still does have a role to play here.
+From the generator example, hopefully its pretty straightforward to see how to do defer fetching. Either return a promise or return a geneartor with no "initial" state.
+
+Render then fetch is a twist on deferred fetching.
 
 # Other
+
+The abstractions 
+
+If I stick with `React` I'll likely use suspense but with the patterns outlined above because:
+
+1. Suspense will be idiomatic and familiar to other devs
+2. Will hopefully outweigh the costs of custom code
+
+but it does seem
 
 - I've never used `Vue` but this `fetch as sibling` makes the view much "dumber" and much more akin to templates that were used back in the day. Seems like a good fit for `Vue`.
 - This little repository is an exploration of those questions before making data fetching pattern recommendations for https://aphrodite.sh users.

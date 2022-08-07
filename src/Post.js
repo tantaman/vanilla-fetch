@@ -23,16 +23,15 @@ export default function Post({ data }) {
 
 Post.fetch = async (id) => {
   const commentsGen = Comments.fetch(id);
-  let [post, comments] = await Promise.all([
+  const [post, comments] = await Promise.all([
     dataSource.post(id),
     commentsGen.next(),
   ]);
-  comments = comments.value;
 
   return {
     post,
     _Comments: {
-      prefetch: comments,
+      prefetch: comments.value,
       generator: commentsGen,
     },
     _Author: await Author.fetch(id),
