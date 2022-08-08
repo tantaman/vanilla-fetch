@@ -1,6 +1,6 @@
 # Apollo without the Apollo, Realy without the Relay
 
-Something has been bothering me about `React` for quite some time. The complexity of data fetching in React apps is off the charts. The frequent pattern for data fetching is "fetch-on-render" which leads to an awful waterfalling user experience.Race conditions when fetching in effects is a common problem. Finally, getting the result of a `JavaScript` promise _always_ enqueues a micro task even if that promise is already resolved, resulting in flickering UIs.
+Something has been bothering me about `React` for quite some time. The complexity of data fetching in React apps is off the charts. The frequent pattern for data fetching is "fetch-on-render" which leads to an awful waterfalling user experience. Next, race conditions when fetching in effects is a common problem. Finally, getting the result of a `JavaScript` promise _always_ enqueues a micro task even if that promise is already resolved, resulting in flickering UIs.
 
 The last one was the last straw for me. It means any `async` data layer that does caching needs another cache atop but behind `synchronous` methods. If not, your render cycle is interrupted till the next tick and your UI flashes various loading states.
 
@@ -10,7 +10,7 @@ The last one was the last straw for me. It means any `async` data layer that doe
 
 # Suspense
 
-Suspense helps a lot on the race condition and fixing "fetch-on-render" fronts. It doesn't, however, solve the problem of how to express all the data needs of a tree of components so we can fully avoid "fetch-on-render" and truly use ["render-as-you-fetch"](https://17.reactjs.org/docs/concurrent-mode-suspense.html#approach-3-render-as-you-fetch-using-suspense).
+Suspense helps a lot with race conditions and gets us a bit closed to fixing "fetch-on-render". It doesn't, however, solve the problem of how to express all the data needs of a tree of components.
 
 Suspense also has some warts. It requires a cache atop your existing caches.
 
@@ -22,11 +22,15 @@ Cache on a cache? What could go wrong.
 
 I started my career developing thick clients in `Java` and `C++`. Yea, `Java`. I'll probably be flamed for being a `Java` dev 🤷‍♂️. The `Java` culture is... over abstracted for sure. `Swing` and `AWT` and over-use of listeners and all that were totally convoluted.
 
-But one thing we never had a problem with was data fetching. We relied strictly on language primitives to get all the data needed by the UI and it was always rather simple.
+But one thing we never had a problem with was data fetching. We relied strictly on language primitives to get all the data needed by the UI and it was always rather simple -- even if that data was across the network and/or we had to spawn new threads to get it.
 
-Can't we go back to using language primitives for data fetching in `JS`? Can't it be simple? And can't we _fetch before we render_ while still localizing data fetching concerns with the components that need the data? Finally, can we allow our async APIs, which may have caching in them already, to keep the responsibility of caching and not duplicate it or move it?
+Can't we go back to using language primitives for data fetching in `JS`?
+- Can it be simple?
+- Can it express the data needs for an entire tree of components?
+- Can we kick off fetching before we kick off rendering while still localizing data fetching concerns with the components that need the data?
+- Finally, can we allow our async APIs, which may have caching in them already, to keep the responsibility of caching and not duplicate it or move it?
 
-The answer seems to be YES! We can do all of this with no help from Suspense/Relay/Apollo/insert other framework here. We can do it all, and keep it all pretty simple, with vanilla `JS`.
+The answer seems to be YES! We can do all of this with no help from Relay/Apollo/React Query/insert other framework here. We can do it all, and keep it all pretty simple, with vanilla `JS`.
 
 # How It's Done
 
