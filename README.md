@@ -10,7 +10,7 @@ The last one was the last straw for me. It means any `async` data layer that doe
 
 # Suspense
 
-Suspense helps a lot with race conditions and gets us a bit closed to fixing "fetch-on-render". It doesn't, however, solve the problem of how to express all the data needs of a tree of components.
+Suspense helps a lot with race conditions and gets us a bit closer to fixing "fetch-on-render". It doesn't, however, solve the problem of how to express all the data needs of a tree of components.
 
 Suspense also has some warts. It requires a cache atop your existing caches.
 
@@ -30,7 +30,7 @@ Can't we go back to using language primitives for data fetching in `JS`?
 - Can we kick off fetching before we kick off rendering while still localizing data fetching concerns with the components that need the data?
 - Finally, can we allow our async APIs, which may have caching in them already, to keep the responsibility of caching and not duplicate it or move it?
 
-The answer seems to be YES! We can do all of this with no help from Relay/Apollo/React Query/insert other framework here. We can do it all, and keep it all pretty simple, with vanilla `JS`.
+The answer seems to be YES! We can do it all, and keep it all pretty simple, with vanilla `JS`.
 
 # How It's Done
 
@@ -161,7 +161,7 @@ But.. what if the data is cached by `Post.fetch` already because you fetched it 
 
 This one might be controversial but I think a valid approach is to not show a loading indicator until the data being loaded has taken more than a specific amount of time.
 
-If we wait ~25ms to show the loading indicator then it will never be shown when we fetch cached data from our data source. Problem solved. Easy.
+If we wait ~25ms to show the loading indicator then it will never be shown when we fetch cached data from our data source.
 
 This is done in [App.js](https://github.com/tantaman/vanilla-fetch/blob/main/src/App.js).
 
@@ -176,4 +176,4 @@ Render-as-you-fetch requires suspense to handle it well. todo.
 - I've never used `Vue` but this `fetch as sibling` makes the view much "dumber" and much more akin to templates that were used back in the day. Seems like a good fit for `Vue`.
 - This little repository is an exploration of those questions before making data fetching pattern recommendations for https://aphrodite.sh users.
 
-view the completed demo: https://tantaman.com/vanilla-fetch/
+Completed demo: https://tantaman.com/vanilla-fetch/
