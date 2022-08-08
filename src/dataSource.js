@@ -22,9 +22,10 @@ const posts = [
 ];
 let commentId = 0;
 
-// The data source could be memoized in a production app.
+
 export default {
   async post(id) {
+    // simulate caching
     if (postCache[id]) {
       return postCache[id];
     }
@@ -36,7 +37,7 @@ export default {
 
   async *comments(postId) {
     // put a cache in front to show that we can cache in the async data layer
-    // and still prevent loading statuses.
+    // and still prevent loading statuses from flashing
     if (commentsCache[postId]) {
       yield commentsCache[postId];
     }
