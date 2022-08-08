@@ -1,19 +1,18 @@
 # Apollo without the Apollo, Realy without the Relay
-(view the completed demo: https://tantaman.com/vanilla-fetch/)
 
-Something has been bothering me about React for quite some time. The complexity of data fetching is off the charts and just doesn't make sense. Then there's "fetch-on-render" which leads to an awful waterfalling user experience. Finally, getting the result of a `JavaScript` promise _always_ enqueues a micro task even if that promise is already resolved.
+Something has been bothering me about `React` for quite some time. The complexity of data fetching in React apps is off the charts. The frequent pattern for data fetching is "fetch-on-render" which leads to an awful waterfalling user experience.Race conditions when fetching in effects is a common problem. Finally, getting the result of a `JavaScript` promise _always_ enqueues a micro task even if that promise is already resolved, resulting in flickering UIs.
 
-The last one was the last straw for me. It means any `async` data layer that does caching needs another cache atop, but behind `synchronous` methods. If not, your render cycle is interrupted till the next tick and your UI flashes.
+The last one was the last straw for me. It means any `async` data layer that does caching needs another cache atop but behind `synchronous` methods. If not, your render cycle is interrupted till the next tick and your UI flashes various loading states.
 
 # Relay, Apollo
 
-`Relay` and `Apollo` make all this a breeze. The way they pull fragments from components and craft a single query that can fulfill the data needs of an entire app is a true blessing. But the cost of adopting those is prohibitive. Do I really need to GraphQL-ify my API just to get such a pleasent data fetching experience? What if I have _local state_ that is behind an async API? E.g., a `SQLite` connection, `IndexedDB` or `Origin Private Filesystem` storing data on-device for my app?
+`Relay` and `Apollo` make all this a breeze. The way they pull fragments from components and craft a single query that can fulfill the data needs of an entire app is a true blessing. But the cost of adopting those can be prohibitive. Do I really need to GraphQL-ify my API just to get such a pleasent data fetching experience? What if I have _local state_ that is behind an async API? E.g., a `SQLite` connection, `IndexedDB` or `Origin Private Filesystem` storing data on-device for my app?
 
 # Suspense
 
-Suspense helps a lot -- but it doesn't solve the problem of how to express all the data needs of a tree of components early so we can avoid "fetch-on-render" and truly use ["render-as-you-fetch"](https://17.reactjs.org/docs/concurrent-mode-suspense.html#approach-3-render-as-you-fetch-using-suspense).
+Suspense helps a lot on the race condition and fixing "fetch-on-render" fronts. It doesn't, however, solve the problem of how to express all the data needs of a tree of components so we can fully avoid "fetch-on-render" and truly use ["render-as-you-fetch"](https://17.reactjs.org/docs/concurrent-mode-suspense.html#approach-3-render-as-you-fetch-using-suspense).
 
-Suspense also has some warts.
+Suspense also has some warts. It requires a cache atop your existing caches.
 
 > We don't intend to provide support for refreshing specific entries. The idea is that you refresh everything, and rely on an additional, backing cache layer — the browser request cache, a mutable data store, etc — to deduplicate requests - https://github.com/reactwg/react-18/discussions/25
 
