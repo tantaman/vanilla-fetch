@@ -34,6 +34,6 @@ Post.fetch = async (id) => {
       prefetch: comments.value,
       generator: commentsGen,
     },
-    _Author: await Author.fetch(id),
+    _Author: await Author.fetch(post.authorId),
   };
 };
