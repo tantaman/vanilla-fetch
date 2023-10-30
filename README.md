@@ -4,7 +4,9 @@ Something has been bothering me about `React` for quite some time. The complexit
 
 > Note: Microtasks complete in the same browser frame but do not complete in the same React frame which causes these flickering issues. https://codesandbox.io/s/fast-fast-7zlfqt?file=/src/App.js  Trying to modify text at the start of the input results in your cursor jumping to the end of the input.
 
-The last one was the last straw for me. It means any `async` data layer that does caching needs another cache atop but behind `synchronous` methods. If not, your render cycle is interrupted till the next tick and your UI flashes various loading states.
+The last one was the last straw for me. It means any `async` data layer that does caching needs another cache atop but behind `synchronous` methods. If not, your render cycle (for React apps) is interrupted and your UI flashes various loading states.
+
+> Note: React's weird and, imo, incorrect handling of microtasks is another reason to try and invest into WebComponents?
 
 # Relay, Apollo
 
