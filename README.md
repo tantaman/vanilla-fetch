@@ -2,6 +2,8 @@
 
 Something has been bothering me about `React` for quite some time. The complexity of data fetching in React apps is off the charts. The frequent pattern for data fetching is "fetch-on-render" which leads to an awful waterfalling user experience. Next, race conditions when fetching in effects is a common problem. Finally, getting the result of a `JavaScript` promise _always_ enqueues a micro task even if that promise is already resolved, resulting in flickering UIs.
 
+> Note: Microtasks complete in the same browser frame but do not complete in the same React frame which causes these flickering issues. https://codesandbox.io/s/fast-fast-7zlfqt?file=/src/App.js  Trying to modify text at the start of the input results in your cursor jumping to the end of the input.
+
 The last one was the last straw for me. It means any `async` data layer that does caching needs another cache atop but behind `synchronous` methods. If not, your render cycle is interrupted till the next tick and your UI flashes various loading states.
 
 # Relay, Apollo
